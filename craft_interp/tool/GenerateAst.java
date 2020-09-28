@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
-public class GenarateAst {
+public class GenerateAst {
     public static void main(String [] args) throws IOException {
         if( args.length != 1) {
             System.err.println("Usage: generate_ast < output directory>");
@@ -18,6 +18,11 @@ public class GenarateAst {
             "Literal    : Object value",
             "Unary      : Token operator, Expr right"
         ));
+        defineAst(outputDir, "Stmt", Arrays.asList(
+                    "Expression : Expr expression",
+                    "Print : Expr expression"
+        ));
+        
     }
 
     private static void defineAst(

@@ -2,9 +2,8 @@ package lox;
 
 
 import java.util.List;
-import java.util.ArrayList;
-import static lox.TokenType.*;
 
+import static lox.TokenType.*;
 
 class Parser {
     private static class ParseError extends RuntimeException {}
@@ -17,14 +16,12 @@ class Parser {
     }
 
 
-     List <Stmt> parse() {
-        List <Stmt> statements = new ArrayList<>();
-        while(!isAtEnd()){
-           statements.add(statement());
+    Expr parse() {
+        try {
+          return expression();
+        } catch (ParseError error) {
+          return null;
         }
-
-
-        return statements;
     }
 
 
@@ -32,25 +29,6 @@ class Parser {
     private Expr expression() {
         return equality();
     }
-
-    private Stmt statement() {
-        if(match(PRINT)) return printStatement();
-
-        return expressionStatement();
-    }
-
-    private Stmt printStatement() {
-        Expr value = expression();
-        consume(SEMICOLON, "Expect ';' after value.");
-        return new Stmt.Print(value);
-    }
-
-    private Stmt expressionStatement() {
-        Expr value = expression();
-        consume(SEMICOLON, "Expect ';' after value.");
-        return new Stmt.Expression(value);
-    }
-
 
     private Expr equality() {
         Expr expr = comparison();
